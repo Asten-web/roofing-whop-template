@@ -23,12 +23,14 @@ const planDetails: Record<PlanKey, { title: string; price: number; note: string 
 
 type Props = { planKey: PlanKey; onClose: () => void };
 type CheckoutState = "ready" | "verifying" | "paid" | "failed";
+type CheckoutMode = "standard" | "express";
 type PaymentsRef = { handle: PaymentsHandle | null };
 
 export function WhopCheckout({ planKey, onClose }: Props) {
   const planId = site.plans[planKey];
   const details = planDetails[planKey];
   const [state, setState] = useState<CheckoutState>("ready");
+  const [checkoutMode, setCheckoutMode] = useState<CheckoutMode>("standard");
   const [paymentId, setPaymentId] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [error, setError] = useState("");
@@ -94,13 +96,32 @@ export function WhopCheckout({ planKey, onClose }: Props) {
         ) : (
           <>
             <p className="checkout-intro">Payment details are collected by Whop. This site never receives or stores card numbers.</p>
+            <div className="checkout-method-options" role="group" aria-label="Choose a checkout method">
+              <button
+                type="button"
+                className={`button ${checkoutMode === "standard" ? "button-dark" : "button-outline"} full-width`}
+                aria-pressed={checkoutMode === "standard"}
+                onClick={() => setCheckoutMode("standard")}
+              >
+                All payment methods
+              </button>
+              <button
+                type="button"
+                className={`button ${checkoutMode === "express" ? "button-dark" : "button-outline"} full-width`}
+                aria-pressed={checkoutMode === "express"}
+                onClick={() => setCheckoutMode("express")}
+              >
+                Express wallets
+              </button>
+            </div>
+            <p className="micro-copy">Express wallets appear only when supported by your device, browser, and merchant settings.</p>
             <WhopElements
               elements={loadWhop()}
               environment={environment}
               appearance={{ theme: { appearance: "light", accentColor: "orange" } }}
             >
               <Checkout
-                key={planId}
+                key={`${planId}-${checkoutMode}`}
                 plan={planId}
                 returnUrl={`${typeof window !== "undefined" ? window.location.origin : "https://example.com"}/checkout/complete`}
                 fallback={<div className="element-loading">Loading Whop checkout…</div>}
@@ -108,8 +129,7 @@ export function WhopCheckout({ planKey, onClose }: Props) {
                   if (completion.result === "payment" && completion.paymentId) void verify(completion.paymentId);
                 }}
               >
-                <ExpressCheckoutElement />
-                <CheckoutElement />
+                {checkoutMode === "express" ? <ExpressCheckoutElement /> : <CheckoutElement />}
               </Checkout>
             </WhopElements>
             {state === "verifying" && <p className="form-status sending" role="status">Confirming payment with Whop…</p>}
