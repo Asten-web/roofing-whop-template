@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { trackWhop } from "@/lib/pixel";
-import { Icon } from "@/components/Icons";
+import { Icon } from "@/components/ui/Icons";
 
 const blank = { name: "", email: "", phone: "", address: "", service: "Roof inspection", details: "", zip: "", website: "" };
 
@@ -21,7 +21,13 @@ export function EstimateForm() {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "We couldn't send your request. Please call us instead.");
-      trackWhop("estimate_requested", { service: form.service, value: 0, currency: "USD", lead_id: result.leadId });
+      if (typeof result.leadId !== "string" || !result.leadId)
+        throw new Error("The estimate could not be confirmed by Whop. Please call us before submitting again.");
+      trackWhop(
+        "estimate_requested",
+        { service: form.service, currency: "USD", lead_id: result.leadId },
+        result.leadId,
+      );
       setStatus({ state: "success", message: "Estimate request received. Our team will follow up shortly." });
       setForm(blank);
     } catch (error) {

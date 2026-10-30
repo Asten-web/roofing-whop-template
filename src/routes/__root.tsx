@@ -1,5 +1,5 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
-import stylesHref from "../styles.css?url";
+import stylesHref from "../styles/globals.css?url";
 import { site } from "@/config/site";
 
 export const Route = createRootRoute({
@@ -12,10 +12,11 @@ export const Route = createRootRoute({
         name: "description",
         content: `Roof inspections, repairs, and replacements in ${site.serviceArea}, with clear scopes, photo-documented work, and Whop-powered checkout.`,
       },
-      { name: "theme-color", content: "#15251f" },
+      { name: "theme-color", content: site.brand.navy },
     ],
     links: [
       { rel: "stylesheet", href: stylesHref },
+      { rel: "icon", type: "image/svg+xml", href: "/icons/favicon.svg" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

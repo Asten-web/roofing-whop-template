@@ -1,18 +1,24 @@
 const env = import.meta.env;
 
 export const site = {
-  // Rebrand from this single file. Replace sample address, contact info, service area, and proof points before using for a real company.
-  companyName: env.VITE_COMPANY_NAME || "Summit Ridge Roofing",
+  demoContent: env.VITE_DEMO_CONTENT !== "false",
+  companyName: env.VITE_COMPANY_NAME || "Your Roofing Company",
   tagline: "Roofing built for the long haul.",
-  phoneDisplay: env.VITE_COMPANY_PHONE_DISPLAY || "(303) 555-0188",
-  phoneTel: env.VITE_COMPANY_PHONE_TEL || "+13035550188",
-  email: env.VITE_COMPANY_EMAIL || "hello@example-roofing.com",
-  city: env.VITE_COMPANY_CITY || "Denver",
-  state: env.VITE_COMPANY_STATE || "CO",
-  serviceArea: env.VITE_SERVICE_AREA || "Denver Metro & the Front Range",
-  addressLine: env.VITE_COMPANY_ADDRESS || "Denver, Colorado",
-  licenseLine: env.VITE_LICENSE_LINE || "Licensed & insured details should be added here",
-  hours: env.VITE_BUSINESS_HOURS || "Mon–Sat · 8:00 AM–6:00 PM",
+  logo: env.VITE_COMPANY_LOGO || "/icons/company-logo.svg",
+  heroImage: env.VITE_HERO_IMAGE || "/images/hero-roofing.jpg",
+  brand: {
+    navy: env.VITE_BRAND_NAVY || "#12243a",
+    orange: env.VITE_BRAND_ORANGE || "#e8742b",
+  },
+  phoneDisplay: env.VITE_COMPANY_PHONE_DISPLAY || "(555) 555-0100",
+  phoneTel: env.VITE_COMPANY_PHONE_TEL || "+15555550100",
+  email: env.VITE_COMPANY_EMAIL || "hello@example.com",
+  city: env.VITE_COMPANY_CITY || "Your City",
+  state: env.VITE_COMPANY_STATE || "ST",
+  serviceArea: env.VITE_SERVICE_AREA || "Your City and nearby communities",
+  addressLine: env.VITE_COMPANY_ADDRESS || "Your City, ST",
+  licenseLine: env.VITE_LICENSE_LINE || "",
+  hours: env.VITE_BUSINESS_HOURS || "Set your business hours",
   whopAccountId: env.VITE_WHOP_ACCOUNT_ID || "",
   sandbox: env.VITE_WHOP_SANDBOX === "true",
   productId: env.VITE_WHOP_LEAD_PRODUCT_ID || "",
@@ -50,28 +56,14 @@ export const site = {
   prices: {
     inspection: 149,
     deposit: 500,
-    repair: 399,
+    repair: 299,
   },
   plans: {
     inspection: env.VITE_WHOP_INSPECTION_PLAN_ID || "",
     deposit: env.VITE_WHOP_DEPOSIT_PLAN_ID || "",
     repair: env.VITE_WHOP_REPAIR_PLAN_ID || "",
   },
-  // Keep these clearly labelled as examples until replaced with real customer feedback.
-  sampleReviews: [
-    {
-      quote: "The estimate was clear, the photos made the issue easy to understand, and there were no surprises in the scope.",
-      attribution: "Example review · replace with verified customer feedback",
-    },
-    {
-      quote: "The crew kept us updated, protected the landscaping, and walked us through the finished work.",
-      attribution: "Example review · replace with verified customer feedback",
-    },
-    {
-      quote: "We knew what was urgent and what could wait. That made the decision much less stressful.",
-      attribution: "Example review · replace with verified customer feedback",
-    },
-  ],
+  reviews: [] as { quote: string; attribution: string; sourceUrl?: string }[],
 } as const;
 
 export type RoofingService = (typeof site.services)[number];
