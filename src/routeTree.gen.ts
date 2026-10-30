@@ -9,38 +9,28 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as CheckoutCompleteRouteImport } from './routes/checkout.complete'
-import { Route as ApiVerifyRouteImport } from './routes/api.verify'
-import { Route as ApiSetupIntentsRouteImport } from './routes/api.setup-intents'
-import { Route as ApiLeadsRouteImport } from './routes/api.leads'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ApiInvoicesRouteImport } from './routes/api.invoices'
+import { Route as ApiLeadsRouteImport } from './routes/api.leads'
+import { Route as ApiSetupIntentsRouteImport } from './routes/api.setup-intents'
+import { Route as ApiVerifyRouteImport } from './routes/api.verify'
+import { Route as CheckoutCompleteRouteImport } from './routes/checkout.complete'
 import { Route as ApiSetupIntentsIdRouteImport } from './routes/api.setup-intents.$id'
 
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CheckoutCompleteRoute = CheckoutCompleteRouteImport.update({
-  id: '/checkout/complete',
-  path: '/checkout/complete',
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiVerifyRoute = ApiVerifyRouteImport.update({
-  id: '/api/verify',
-  path: '/api/verify',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiSetupIntentsRoute = ApiSetupIntentsRouteImport.update({
-  id: '/api/setup-intents',
-  path: '/api/setup-intents',
+const ApiInvoicesRoute = ApiInvoicesRouteImport.update({
+  id: '/api/invoices',
+  path: '/api/invoices',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiLeadsRoute = ApiLeadsRouteImport.update({
@@ -48,9 +38,19 @@ const ApiLeadsRoute = ApiLeadsRouteImport.update({
   path: '/api/leads',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiInvoicesRoute = ApiInvoicesRouteImport.update({
-  id: '/api/invoices',
-  path: '/api/invoices',
+const ApiSetupIntentsRoute = ApiSetupIntentsRouteImport.update({
+  id: '/api/setup-intents',
+  path: '/api/setup-intents',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiVerifyRoute = ApiVerifyRouteImport.update({
+  id: '/api/verify',
+  path: '/api/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutCompleteRoute = CheckoutCompleteRouteImport.update({
+  id: '/checkout/complete',
+  path: '/checkout/complete',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiSetupIntentsIdRoute = ApiSetupIntentsIdRouteImport.update({
@@ -135,13 +135,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -149,25 +142,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/checkout/complete': {
-      id: '/checkout/complete'
-      path: '/checkout/complete'
-      fullPath: '/checkout/complete'
-      preLoaderRoute: typeof CheckoutCompleteRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/verify': {
-      id: '/api/verify'
-      path: '/api/verify'
-      fullPath: '/api/verify'
-      preLoaderRoute: typeof ApiVerifyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/setup-intents': {
-      id: '/api/setup-intents'
-      path: '/api/setup-intents'
-      fullPath: '/api/setup-intents'
-      preLoaderRoute: typeof ApiSetupIntentsRouteImport
+    '/api/invoices': {
+      id: '/api/invoices'
+      path: '/api/invoices'
+      fullPath: '/api/invoices'
+      preLoaderRoute: typeof ApiInvoicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/leads': {
@@ -177,11 +163,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiLeadsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/invoices': {
-      id: '/api/invoices'
-      path: '/api/invoices'
-      fullPath: '/api/invoices'
-      preLoaderRoute: typeof ApiInvoicesRouteImport
+    '/api/setup-intents': {
+      id: '/api/setup-intents'
+      path: '/api/setup-intents'
+      fullPath: '/api/setup-intents'
+      preLoaderRoute: typeof ApiSetupIntentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/verify': {
+      id: '/api/verify'
+      path: '/api/verify'
+      fullPath: '/api/verify'
+      preLoaderRoute: typeof ApiVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/complete': {
+      id: '/checkout/complete'
+      path: '/checkout/complete'
+      fullPath: '/checkout/complete'
+      preLoaderRoute: typeof CheckoutCompleteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/setup-intents/$id': {
@@ -218,3 +218,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
